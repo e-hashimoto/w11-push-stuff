@@ -1,0 +1,5 @@
+forEach loop in Pug === each thing in things
+
+good for table elements in Pug
+
+
