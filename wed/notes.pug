@@ -1,0 +1,18 @@
+html
+    head
+        title whatever
+        link(rel="stylesheet", href="/css/test.css")
+    body
+        table
+            thead
+                tr
+                    th Username
+                    th Password
+                    th Favorite Bread
+            tbody
+                each user in users
+                    tr
+                        td= user.username
+                        td= user.password
+                        td= user.faveBread
+                        td: a(href=`/users/${user.id}`) #{user.username}'s proflie

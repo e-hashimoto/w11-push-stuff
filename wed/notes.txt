@@ -2,4 +2,22 @@ forEach loop in Pug === each thing in things
 
 good for table elements in Pug
 
+Middleware function anatomy
+    req object
+    res object
+    next
 
+Different levels of middleare applications
+    model
+    route
+    application
+
+Middleware has to be placed above route handlers
+
+CSRF set up
+    csurf
+    cookie-parser
+    app.use(cookieParser())
+
+    const csrf = require('csurf');
+    const csrfProtection = csrf({cookie: true})
