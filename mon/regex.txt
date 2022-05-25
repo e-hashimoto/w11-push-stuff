@@ -1,0 +1,17 @@
+Regex: pattern-matching machine
+
+Take some pattern and test against input values: Is there a match and what did match?
+
+When given a string, needs to match EXACTLY.
+    Ex: if 'pat', need EXACTLY 'pat'.  Case-sensitive
+
+* Operator: 0+ of what we are looking for
+    Ex: th*e === look for th(0 or more h's)e --> 'pattern' works
+    Ex: at* === look for at(0 or more t's) --> 'pattern' works
+
+? Operator: 0 or 1 of what's right BEFORE input
+    Ex: at?t === a, zero or one t, t
+
+    whAT is the pATTern? --> CAPS is what matches the pattern
+
+
