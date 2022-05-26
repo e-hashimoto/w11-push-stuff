@@ -1,0 +1,4 @@
+Environement variables
+    - can be used to provide info within the environment it is in
+    - helps protect info
+
