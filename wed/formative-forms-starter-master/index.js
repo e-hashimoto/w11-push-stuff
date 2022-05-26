@@ -136,13 +136,6 @@ const beatleChecker = (req, res, next) => {
   }
 }
 
-const iceCreamChecker = (req, res, next) => {
-  const selected = req.body.iceCream
-
-  if (!selected) {
-  
-  }
-}
 
 app.post('/create-interesting', errorArray, ageChecker, beatleChecker, firstNameChecker, lastNameChecker, emailChecker, passwordFinder, passwordMatcher, csrfProtection, async(req, res) => {
   if (req.errors.length > 0) {
