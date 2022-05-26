@@ -1,0 +1,18 @@
+body 
+    form(action="/" method="post") 
+        input(type="hidden" name="_csrf" value=csrfToken)
+        label(for="name") Name: 
+        input(type="text" name="name")
+        br
+        label(for="email") Email: 
+        input(type="text" name="email")
+        br
+        label(for="password") Password: 
+        input(type="text" name="password")
+        br
+        label(for="favoriteThing") What is your favorite thing?
+        select(name="favoriteThing")
+            each thing in things
+                option= thing.nameOfThing
+        br
+        button Create User 

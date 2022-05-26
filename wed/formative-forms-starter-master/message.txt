@@ -1,0 +1,251 @@
+const express = require('express');
+const cookieParser = require('cookie-parser');
+// const { check, validationResult } = require('express-validator');
+const csrf = require('csurf');
+// const morgan = require('morgan');
+
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+const csrfProtection = csrf({ cookie: true });
+
+// app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.set('view engine', 'pug');
+
+const users = [
+	{
+		id: 1,
+		firstName: 'Jill',
+		lastName: 'Jack',
+		email: 'jill.jack@gmail.com',
+	},
+];
+
+app.get('/', (req, res) => {
+	res.render('index', { users });
+});
+
+app.get('/create', csrfProtection, (req, res) => {
+	res.render('create', { csrfToken: req.csrfToken(), errors: [], data: {} });
+});
+
+const errorArray = (req, res, next) => {
+	req.errors = [];
+	next();
+};
+
+const firstNameChecker = (req, res, next) => {
+	const firstName = req.body.firstName;
+	if (firstName) {
+		next();
+	} else {
+		req.errors.push('Please provide a first name.');
+		next();
+	}
+};
+
+const lastNameChecker = (req, res, next) => {
+	const lastName = req.body.lastName;
+	if (lastName) {
+		next();
+	} else {
+		req.errors.push('Please provide a last name.');
+		next();
+	}
+};
+
+const emailChecker = (req, res, next) => {
+	const email = req.body.email;
+	if (email) {
+		next();
+	} else {
+		req.errors.push('Please provide an email.');
+		next();
+	}
+};
+
+const passwordFinder = (req, res, next) => {
+	const password = req.body.password;
+	if (password) {
+		next();
+	} else {
+		req.errors.push('Please provide a password.');
+		next();
+	}
+};
+
+const passwordMatcher = (req, res, next) => {
+	const password = req.body.password;
+	const confirmedPassword = req.body.confirmedPassword;
+
+	if (password === confirmedPassword) {
+		next();
+	} else {
+		req.errors.push(
+			'The provided values for the password and password confirmation fields did not match.'
+		);
+		next();
+	}
+};
+
+app.post(
+	'/create',
+	errorArray,
+	firstNameChecker,
+	lastNameChecker,
+	emailChecker,
+	passwordFinder,
+	passwordMatcher,
+	csrfProtection,
+	async (req, res) => {
+		if (req.errors.length > 0) {
+			res.render('create', {
+				csrfToken: req.csrfToken(),
+				errors: req.errors,
+				data: req.body,
+			});
+		} else {
+			const { firstName, lastName, email } = req.body;
+			users.push({
+				id: users.length + 2,
+				firstName,
+				lastName,
+				email,
+			});
+			res.redirect('/');
+		}
+	}
+);
+
+app.get('/create-interesting', csrfProtection, (req, res) => {
+	res.render('create-interesting', {
+		csrfToken: req.csrfToken(),
+		errors: [],
+		data: {},
+	});
+});
+
+// submit-interesting
+// when none of the fields are filled
+// 1) render an unordered list of error messages
+// 2) renders li elements for each error message
+// when only the firstName field is filled
+// 3) render li elements for each error message
+// 4) prefills the firstName input value with the submitted firstName value
+// when only the lastName field is filled
+//  5) render li elements for each error message
+// 6) prefills the lastName input value with the submitted lastName value
+// when only the email field is filled
+// 7) render li elements for each error message
+// 8) prefills the email input value with the submitted email value
+// when password and confirmedPassword fields do not match
+// 9) render li elements for each error message
+// age field
+// 10) renders an error message if age is not submitted
+// 11) renders an error message if age is not a number
+// 12) renders an error message if age is greater than 120
+// 13) renders an error message if age is less than 0
+// 14) prefills the age input value with the submitted age value
+// favoriteBeatle field
+// 15) renders an error message if favoriteBeatle is not submitted
+// 16) renders an error message if favoriteBeatle is not a valid member of the Beatles
+// 17) marks the submitted favoriteBeatle value as 'selected'
+// when iceCream field is checked and there is an error with form
+// 18) marks the iceCream field as checked
+// when all fields are filled correctly
+// 19) redirects user back to home page to see newly created user
+
+app.post('/create-interesting', csrfProtection, (req, res) => {
+	const {
+		firstName,
+		lastName,
+		email,
+		password,
+		confirmedPassword,
+		age,
+		favoriteBeatle,
+		iceCream,
+	} = req.body;
+	const errors = [];
+	if (!firstName) {
+		errors.push('Please provide a first name.');
+	}
+	if (!lastName) {
+		errors.push('Please provide a last name.');
+	}
+	if (!email) {
+		errors.push('Please provide an email.');
+	}
+	if (!password) {
+		errors.push('Please provide a password.');
+	}
+	if (!confirmedPassword) {
+		errors.push('Please provide a password confirmation.');
+	}
+	if (password !== confirmedPassword) {
+		errors.push(
+			'The provided values for the password and password confirmation fields did not match.'
+		);
+	}
+	if (!age) {
+		errors.push('age is required');
+	}
+	if (age && isNaN(age)) {
+		errors.push('age must be a valid age');
+	}
+	if (age && age > 120) {
+		errors.push('age must be a valid age');
+	}
+	if (age && age < 0) {
+		errors.push('age must be a valid age');
+	}
+	if (!favoriteBeatle) {
+		errors.push('favoriteBeatle is required');
+	}
+	if (favoriteBeatle)
+		if (
+			favoriteBeatle !== 'John' &&
+			favoriteBeatle !== 'Paul' &&
+			favoriteBeatle !== 'George' &&
+			favoriteBeatle !== 'Ringo'
+		) {
+			errors.push('favoriteBeatle must be a real Beatle member');
+		}
+	// marks the submitted favoriteBeatle value as 'selected'
+		if (favoriteBeatle === 'John') {
+			req.body.John = 'selected';
+		}
+
+	// when iceCream field is checked and there is an error with form
+	//      marks the iceCream field as checked:
+	if (iceCream && errors.length > 0) {
+		errors.push('iceCream is required');
+	}
+
+	if (errors.length > 0) {
+		res.render('create-interesting', {
+			csrfToken: req.csrfToken(),
+			errors,
+			data: req.body,
+		});
+	} else {
+		users.push({
+			id: users.length + 2,
+			firstName,
+			lastName,
+			email,
+			password,
+			age,
+			favoriteBeatle: favoriteBeatle === 'on',
+			iceCream: iceCream === 'on',
+		});
+		res.redirect('/');
+	}
+});
+
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+
+module.exports = app;
