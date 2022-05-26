@@ -21,3 +21,6 @@ CSRF set up
 
     const csrf = require('csurf');
     const csrfProtection = csrf({cookie: true})
+
+    req.csrfToken()
+    input(type="hidden" name="_csrf" value=token) -- name has to be exactly _csrf

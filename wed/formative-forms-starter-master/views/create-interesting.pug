@@ -1,0 +1,33 @@
+extends layout.pug
+block content
+    h1 Submit form here
+        if errors.length
+            ul
+                p= 'The following errors were found:'
+                each err in errors
+                    li= err
+    form(method="post" action="/create-interesting")
+        include includes/form-inputs.pug
+        //- input(type="hidden" name="_csrf" value=csrfToken)
+        //- label(for="fullName") Full Name:
+        //- input(type="text" name="firstName" value=data.firstName)
+        //- input(type="text" name="lastName" value=data.lastName)
+        //- label(for="email") Email:
+        //- input(type="email" name="email" value=data.email)
+        //- label(for="age") Age:
+        //- input(type="number" name="age" value.data.age)
+        label(for="favoriteBeatle") Favorite Beatle:
+        select(name="favoriteBeatle")
+            option(value= "") --Please choose an option--
+            option(value="John") John
+            option(value="Paul") Paul
+            option(value="Ringo") Ringo
+            option(value="George") George
+            option(value="Scooby-Doo") Scooby-Doo
+        //- label(for="password") Create password:
+        //- input(type="password" name="password" value=data.password)
+        //- label(for="confirmPassword") Confirm password:
+        //- input(type="password" name="confirmedPassword" value=data.confirmedPassword)
+        label(for="iceCream") Ice Cream:
+        input(type="checkbox" name="iceCream")
+        input(type="submit" value="Create Interesting User")
