@@ -146,4 +146,43 @@ EXPRESS MIDDLEWARE
 CSRF ATTACKS
 
     CSRF explained
-        CSRF : Cross Site Request Forgery 
+        CSRF : Cross Site Request Forgery
+        Prevents fraud
+
+    Preventing CSRF
+        have server render a secret token as part of the form
+
+        Using the csurf library
+            - creates a middleware function that does the following:
+                1) creates a secret value, which is sent to the client
+                    and stored as a cookie named _csrf
+
+                2) On every request for a form, a CSRF token is generated
+                    from that secret value; CSRF token is then sent
+                    back to the client as part of the form in a hidden
+                    input field.
+
+                3) Whenever the client submits the form, server checks
+                        CSRF token that's embedded in the form and
+                        verifies that it is a valid CSRF token by
+                        checking it against the secret _csrf value
+                        that was attached to the request as a cookie
+
+            - npm install csurf@^1.0.0 - installs csurf
+            - npm install cookie-parser@^1.0.0 - parses out cookie to verify
+                token
+
+            generate a CSRF token by calling req.csrfToken();
+                - csrfToken() was added to the req object by the
+                    csrfProtection middleware; middleware also
+                    generates a secret _csrf value and stored it in
+                    the res object's headers so that the client
+                    can store it as a cookie
+
+___________________________________________________________________________________
+
+HW for Thurs
+
+ENVIRONMENT VARIABLES
+
+

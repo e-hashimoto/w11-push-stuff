@@ -7,6 +7,7 @@ block content
                     li #{error}
     h2 Add Guest
     form(method="post" action="/guest")
+        input(type="hidden" name="_csrf" value=csrfToken)
         label(for="fullname") Full Name:
         input(type="text" id="fullname" name="fullname" value=fullName)
         label(for="email") Email:

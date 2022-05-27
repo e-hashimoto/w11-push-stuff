@@ -1,11 +1,15 @@
 const express = require('express');
+const cookieParser = require("cookie-parser");
+const csrf = require("csurf");
 
 // Create the express app
 const app = express();
 
 // Set the pug view engine
 app.set('view engine', 'pug');
+app.use(cookieParser());
 app.use(express.urlencoded());
+const csrfProtection = csrf({ cookie: true });
 
 const guests = [];
 
@@ -37,11 +41,11 @@ app.get('/', (req, res) => {
     res.render('index', { title: "Guest List", guests });
 });
 
-app.get('/guest', (req, res) => {
-    res.render("guest-form", { title: "Guest Form" });
+app.get('/guest', csrfProtection, (req, res) => {
+    res.render("guest-form", { title: "Guest Form", csrfToken: req.csrfToken() });
 });
 
-app.post("/guest", validateGuest, (req, res) => {
+app.post("/guest", csrfProtection, validateGuest, (req, res) => {
     // Whatever we wanna put in here
     const { fullName, email, numGuests } = req.body;
     if (req.errors.length > 0) {
