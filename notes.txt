@@ -319,4 +319,50 @@ ENVIRONMENT VARIABLES
 
         Defining environment specific npm scripts
 
-            package.json for local 
+            package.json for local development
+                {
+                    "scripts": {
+                        "start": "node app.js"
+                    }
+                }
+
+            Instead of manually changing npm start to deploy your
+                app, use per-env:
+
+                npm install per-env
+
+            Then update npm scripts to:
+                {
+                    "scripts": {
+                        "start": "per-env",
+                        "start:development": "nodemon app.js",
+                        "start:production": "node app.js",
+                    }
+                }
+
+ASYNC ROUTE HANDLERS
+
+    Calling Asynchronous Functions or Methods Within Route Handlers
+
+        Creating a simple asynchronous function
+
+                * Asynchronous function that delays for the provided length of time.
+                * If the length of time to wait is less than '0', then the returned
+                * Promise will reject, otherwise it'll resolve.
+                * @param {number} timeToWait - The length of time to wait in milliseconds.
+
+                const delay = (timeToWait) => new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (timeToWait < 0) {
+                            reject(new Error('An error has occurred!'));
+                        } else {
+                            resolve(`All done waiting for ${timeToWait}ms!`);
+                        }
+                    }, Math.abs(timeToWait));
+                });
+
+        Setting up the Express Application
+
+            See app.js under thurs.HW
+
+        

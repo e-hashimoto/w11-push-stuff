@@ -7,6 +7,38 @@
 
 
 // Your code here
+const express = require('express');
+
+const app = express();
+
+const csrf = require('csurf');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+const { HairColor, Person } = require('./models');
+const csrfProtection = csrf({ cookie: true });
+
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(cookieParser());
+
+app.set('view engine', 'pug');
+
+const asyncHandler = handler => (req, res, next) => handler(req, res, next).catch(next);
+
+app.get('/new-person', csrfProtection, asyncHandler(async (req, res) => {
+  const hairColors = await HairColor.findAll({
+    order: ["color"]
+  })
+  res.render('new-person-form', {
+    hairColors,
+    csrfToken: req.csrfToken()
+  });
+}));
+
+
+const port = 8081;
+app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 
 
