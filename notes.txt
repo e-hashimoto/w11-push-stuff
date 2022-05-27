@@ -138,7 +138,7 @@ EXPRESS MIDDLEWARE
         Moving all validations into a middleware function allows you
             to concisely reuse validations across different routes
 
-        Note: in production-level porjects, will most likely use express-
+        Note: in production-level projects, will most likely use express-
             validator which follows the same pattern of validating data in
             middleware functions and then passing on error messages
             through the req object.
@@ -185,4 +185,138 @@ HW for Thurs
 
 ENVIRONMENT VARIABLES
 
+    What are environment variables?
+        \
+        Wait, what's an environment?
+            environment: the system that an application is deployed to and running
+                in
+            ex: all projects have been on the "local environment"
 
+        There are multiple environments that the application will be deployed
+            and ran within:
+
+            Testing - used to test the app to ensure recent changes don't affect
+                existing functionality and that new features meet the project's
+                    requirements
+
+            Staging - mirrors the production environment to ensure that nothing
+                unexpected occurs before the app is deployed to production
+
+            Production - servers end users; for apps that need to support a large
+                number of users, this environment can contain multiple servers
+
+        Environment variables have their values change depending on the environment
+            the app is running in; allows the change of behavior of the app by the
+            environment it's running in w/o having to hard code values into code
+
+        How are environment variables commonly used?
+
+            List:
+                - database connection settings (config/database.js)
+                - server HTTP ports
+                - static file locations
+                - API keys and secrets
+
+            Sequelize does not allow any flexibility for testing
+
+            Environment variables for the database connection settings separates the
+                configuration from the application's code and allows the configuration
+                to be updated without having to make a code change
+
+            Location = usually found in config/database.js files or something similar
+
+    Setting and getting environment variable values
+
+        Setting an environment variable value
+
+            quickest way: via command line
+                PORT=8080 node app.js
+
+            can declare and set multiple environment variables:
+                PORT=8080 NODE_ENV=development node app.js
+
+                NODE_ENV (node environment variable): special variable that's used by
+                    many node programs to determine what environment the app is running
+                    in
+
+                    ex: setting to "production" enables features in Express that help
+                        to improve the overall performance of your application
+
+            can also do so within an npm "start" script:
+
+                {
+                    "scripts": {
+                        "start": "PORT=8080 NODE_ENV=development node app.js"
+                    }
+                }
+
+        Getting an environment variable value
+
+            use the process.env property:
+
+                const port = process.env.PORT;
+
+            process object is a global NODE object to access the process.env
+                property from anywhere within your Node application
+
+            If the PORT environment variable isn't declared/set, it'll have a
+                value of undefined; can use OR ( || ) to provide a default
+
+                const port = process.env.PORT || 8080;
+
+    Storing environment variables in a .env file
+
+        passing environment variables from the command line is NOT IDEAL
+
+        use the dotenv npm package to allow declaration, storage, and setting
+            of all environment variables in a .env file
+
+            npm install dotenv --save-dev
+
+        HIGHLY RECOMMEND INSTALLING DotENV extension for VSCode
+
+        Loading environment variables on application setup
+
+        All code to initialize Express app within your root directory of the proj:
+
+            npm init --yes
+            npm install express@^4.0.0 pug@^2.0.0
+            npm install nodemon@^2.0.0 --save-dev
+            mkdir views
+            touch index.js views/index.pug
+
+        Another way to use dotenv (within your package.json file)
+            {
+                "scripts": {
+                    "start": "node -r dotenv/config app.js"
+                }
+            }
+
+        Keeping the .env file out of source control
+
+            usually contains sensitive info
+
+            recommend creating a .gitignore file and placing .env
+                in there
+
+                - if sharing, recommend creating a .env.example file
+                    to mirror the contents
+
+    Using a module to organnize environment variables
+
+        Create a config.js file - has one purpose: import all of the
+            environment variables and export them to make them available
+            to the rest of your application.
+
+        Running npm binaries
+
+            npm install dotenv-cli --save-dev
+            npx sequelize init
+            npx dotenv sequelize db:migrate
+
+            Note: Might run into issues with this step with the following error:
+                ERROR: Please install mysql2 package manually
+
+        Defining environment specific npm scripts
+
+            package.json for local 
