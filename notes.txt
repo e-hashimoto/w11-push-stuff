@@ -27,3 +27,23 @@ HTML FORMS: an Intro
         Server-side validations ensure that the form is submitted correctly
 
 FORMS WITH EXPRESS
+
+    when creating a form, make sure that the name attribute
+        of inputs match up with the holder array of the info
+        a user is submitting.  the reasoning is to keep variables
+        consistent with frontend and backend.
+
+    A quick aside: Pug layout templates
+
+        couple of ways to easily navigate between pages
+            of home and form submission
+
+            1) Could c/p top of index.pug file to the top
+                of the guest-form.pug file (not ideal)
+
+            2) block and extends
+
+                block = chunk of Pug code that a "child
+                    template can replace"
+                    - create a layout file for all templates
+                        to share 
