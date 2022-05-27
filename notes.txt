@@ -1,0 +1,29 @@
+Notes for this week
+
+HTML FORMS: an Intro
+
+    Key components of a form:
+        <form>
+            - parent element of all input fields
+            - has 2 unique attributes
+                - action
+                    1. defines the location (URL) where the form should send
+                        the data to when it is submitted
+                - method
+                    1. defines the HTTP verb that should be used to make the
+                        request to the server
+                    2. browsers support only two values: "get" and "post"
+
+        <input>
+            - contains a type attribute: tells the browser what kind of input it expects,
+                browser enforces different rules for each type of input
+            - has a name attribute: represents data as a key-value pair with the value of the
+                name attribute set as the key
+            - id attribute ties input element with label element by matching label element's
+                "for" attribute
+
+
+    Submitting the form
+        Server-side validations ensure that the form is submitted correctly
+
+FORMS WITH EXPRESS
