@@ -1,11 +1,16 @@
 extends layout.pug
 block content
+    if errors
+        div
+            ul
+                each error in errors
+                    li #{error}
     h2 Add Guest
     form(method="post" action="/guest")
         label(for="fullname") Full Name:
-        input(type="text" id="fullname" name="fullname")
+        input(type="text" id="fullname" name="fullname" value=fullName)
         label(for="email") Email:
-        input(type="email" id="email" name="email")
+        input(type="email" id="email" name="email" value=email)
         label(for="numGuests") Number of Guests:
-        input(type="number" id="numGuests" name="numGuests")
+        input(type="number" id="numGuests" name="numGuests" value=numGuests)
         input(type="submit" value="Add Guest")

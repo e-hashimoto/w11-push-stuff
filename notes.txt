@@ -82,4 +82,68 @@ DATA VALIDATION
             on the server side?"
 
         Expected data types
-            
+            Checking for integer vs. float (user's age must
+                be an integer)
+            Checking that an input date string can be
+                converted to a valid date.
+
+        Valid ranges and format
+            Ensuring input is valid (age can't be over 120)
+            Ensuring input is the correct format
+            Ensuring strong and secure passwords
+
+        Other validations
+            Creating other fields (confirming password)
+
+        Validations: checking that all fields are filled
+            add a required attribute on the server-side of
+                things
+
+        Validations: ensuring that numGuests is valid
+            numGuests >= 1
+            make sure it's not a string
+
+        Improve user experience
+            When there is a server-side error, the entire field
+                gets wiped, and the user must fill them out all
+                over again.
+
+            To avoid this, preset each field with the values
+                that they had just submitted.
+
+EXPRESS MIDDLEWARE
+
+    Middleware Oveview
+        "An Express application is essentially a sereies of
+            middleware function calls."
+
+        Anatomy of a middleware function
+            Takes 3 arguments in a specific order:
+                1) req - the request object
+                2) res - the response object
+                3) next - "the next middleware
+                            function in the application's
+                            request-response cycle"
+
+        Series of middleware functions
+            Can invoke as many middleware functions as one likes
+
+        Application-level middleware
+            introduce a function, and then use the app.use(`functionName`)
+                method to invoke the function on every route
+
+    Data Validations with Middleware
+        Example: updating a guest from the forms-demo practice
+
+        Moving all validations into a middleware function allows you
+            to concisely reuse validations across different routes
+
+        Note: in production-level porjects, will most likely use express-
+            validator which follows the same pattern of validating data in
+            middleware functions and then passing on error messages
+            through the req object.
+
+CSRF ATTACKS
+
+    CSRF explained
+        CSRF : Cross Site Request Forgery 
