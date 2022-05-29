@@ -5,6 +5,6 @@ form(method="post" action="/new-person")
     input(name="age" type="number")
     textarea(name="biography")
     select(name="hairColorId" required)
-     each hairColor in hairColors
-        option(value=hairColor.id)= hairColors.color
-    button(type="Submit")
+        each hairColor in hairColors
+            option(value=hairColor.id)= hairColors.color
+    button(type="submit")
