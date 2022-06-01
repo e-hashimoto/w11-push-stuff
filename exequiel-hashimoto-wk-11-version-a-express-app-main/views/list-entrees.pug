@@ -1,0 +1,16 @@
+table
+  thead
+    tr
+      th Name
+      th Description
+      th Price
+      th Type Name
+      th Is vegetarian
+  tbody
+    each entree in entrees
+      tr
+        td= entree.name
+        td= entree.description
+        td= entree.price
+        td= entree.EntreeType.name
+        td= entree.EntreeType.isVegetarian

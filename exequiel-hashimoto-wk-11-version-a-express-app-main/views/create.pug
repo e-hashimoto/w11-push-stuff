@@ -1,0 +1,13 @@
+form(method="post" action="/entrees")
+    input(name="_csrf" type="hidden" value=csrfToken)
+    label Name
+    input(name="name" type="text" required)
+    label Description
+    textarea(name="description")
+    label Price
+    input(name="price" type="number" required)
+    label Entree
+    select(name="entreeTypeId" required)
+        each entreeType in entreeTypes
+            option(value=entreeType.id)= entreeType.name
+    button(type="submit") Submit Entree
